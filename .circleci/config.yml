@@ -22,7 +22,7 @@ jobs:
   build:
     executor:
       name: go/default
-      tag: '1.19.3'
+      tag: '1.19.3@sha256:4f16ed625733fe5d8e7452e075bdd666d0752e0c44643124e4d7c28a2f37351d'
     steps:
       - checkout
       - go/load-cache
@@ -33,9 +33,8 @@ jobs:
           failfast: true
           race: true
   release:
-    working_directory: ~/fhcli
     docker:
-      - image: cimg/go:1.19
+      - image: cimg/go:1.19.3@sha256:4f16ed625733fe5d8e7452e075bdd666d0752e0c44643124e4d7c28a2f37351d
     steps:
       - checkout
       - run: curl -sfL https://goreleaser.com/static/run | bash
