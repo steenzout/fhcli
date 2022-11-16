@@ -34,18 +34,18 @@ jobs:
           path: /tmp/test-reports
     working_directory: ~/fhcli
 
-  release:
-    docker:
-      - image: cimg/go:1.19.3@sha256:4f16ed625733fe5d8e7452e075bdd666d0752e0c44643124e4d7c28a2f37351d
-    steps:
-      - checkout
-      - run:
-          name: Install goreleaser
-          command: curl -sL https://git.io/goreleaser | bash
+  # release:
+  #   docker:
+  #     - image: cimg/go:1.19.3@sha256:4f16ed625733fe5d8e7452e075bdd666d0752e0c44643124e4d7c28a2f37351d
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Install goreleaser
+  #         command: curl -sL https://git.io/goreleaser | bash
       # - run: echo machine github.com > ~/.netrc
       # - run: echo login fh-releaser >> ~/.netrc
       # - run: echo password $GITHUB_TOKEN >> ~/.netrc
-    working_directory: ~/fhcli
+    # working_directory: ~/fhcli
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
@@ -54,11 +54,11 @@ workflows:
   build:
     jobs:
       - build
-  release:
-    jobs:
-      - release:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
+  # release:
+  #   jobs:
+  #     - release:
+  #         filters:
+  #           branches:
+  #             ignore: /.*/
+  #           tags:
+  #             only: /v[0-9]+(\.[0-9]+)*(-.*)*/
