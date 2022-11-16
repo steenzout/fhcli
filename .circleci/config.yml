@@ -2,8 +2,11 @@
 
 version: 2.1
 
+orbs:
+  go: circleci/go@1.7.1
+
 workflows:
-  build:
+  main:
     jobs:
       - build
   tag:
@@ -17,28 +20,18 @@ workflows:
 
 jobs:
   build:
-    working_directory: ~/fhcli
-    docker:
-      - image: cimg/go:1.19.3@sha256:4f16ed625733fe5d8e7452e075bdd666d0752e0c44643124e4d7c28a2f37351d
+    executor:
+      name: go/default
+      tag: '1.19.3'
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - go-mod-v4-{{ checksum "go.sum" }}
-      - run:
-          name: Install dependencies
-          command: go mod download
-      - save_cache:
-          key: go-mod-v4-{{ checksum "go.sum" }}
-          paths:
-            - "/go/pkg/mod"
-      - run:
-          name: Run tests
-          command: |
-            mkdir -p /tmp/test-reports
-            gotestsum --junitfile /tmp/test-reports/unit-tests.xml
-      - store_test_results:
-          path: /tmp/test-reports
+      - go/load-cache
+      - go/mod-download
+      - go/save-cache
+      - go/test:
+          covermode: atomic
+          failfast: true
+          race: true
   release:
     working_directory: ~/fhcli
     docker:
