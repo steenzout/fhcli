@@ -10,7 +10,7 @@ jobs:
     # You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
-      - image: circleci/golang:1.17
+      - image: cimg/go:1.19.3@sha256:4f16ed625733fe5d8e7452e075bdd666d0752e0c44643124e4d7c28a2f37351d
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
@@ -36,7 +36,7 @@ jobs:
 
   release:
     docker:
-      - image: circleci/golang:1.17
+      - image: cimg/go:1.19.3@sha256:4f16ed625733fe5d8e7452e075bdd666d0752e0c44643124e4d7c28a2f37351d
     steps:
       - checkout
       - run:
