@@ -6,7 +6,6 @@ version: 2.1
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
   build:
-    working_directory: ~/fhcli
     # Specify the execution environment.
     # You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
@@ -20,7 +19,7 @@ jobs:
           keys:
             - go-mod-v4-{{ checksum "go.sum" }}
       - run:
-          name: Install Dependencies
+          name: Install dependencies
           command: go mod download
       - save_cache:
           key: go-mod-v4-{{ checksum "go.sum" }}
@@ -33,16 +32,20 @@ jobs:
             gotestsum --junitfile /tmp/test-reports/unit-tests.xml
       - store_test_results:
           path: /tmp/test-reports
+    working_directory: ~/fhcli
+
   release:
     docker:
       - image: circleci/golang:1.17
-    working_directory: ~/fhcli
     steps:
       - checkout
-      - run: curl -sL https://git.io/goreleaser | bash
+      - run:
+          name: Install goreleaser
+          command: curl -sL https://git.io/goreleaser | bash
       # - run: echo machine github.com > ~/.netrc
       # - run: echo login fh-releaser >> ~/.netrc
       # - run: echo password $GITHUB_TOKEN >> ~/.netrc
+    working_directory: ~/fhcli
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
